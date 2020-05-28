@@ -13,7 +13,7 @@ public class ConvexHullParallel extends ConvexHull implements AM {
 
     public static int PARALLEL_SIZE_LIMIT = 1 << 16;
 
-    public static channel callConvexHull(AMInfo info, List<MyPoint> points, MyPoint p1, MyPoint p2, Integer side) {
+    public static channel callConvexHull(AMInfo info, List<MyPoint> points, MyPoint p1, MyPoint p2, Integer side, Integer parUntil) {
         point p = info.createPoint();
         channel c = p.createChannel();
         p.execute("ConvexHullParallel");
@@ -21,6 +21,7 @@ public class ConvexHullParallel extends ConvexHull implements AM {
         c.write((Serializable) p1);
         c.write((Serializable) p2);
         c.write((Serializable) side);
+        c.write((Serializable) parUntil);
         return c;
     }
 
@@ -30,6 +31,7 @@ public class ConvexHullParallel extends ConvexHull implements AM {
         MyPoint p1 = (MyPoint) info.parent.readObject();
         MyPoint p2 = (MyPoint) info.parent.readObject();
         Integer side = (Integer) info.parent.readObject();
+        Integer parUntil = (Integer) info.parent.readObject();
         System.out.println("Convex hull iteration.\n" +
                 "p1: " + p1.toString() + " p2: " + p2.toString());
 
@@ -53,11 +55,18 @@ public class ConvexHullParallel extends ConvexHull implements AM {
             hull.add((p2));
         }
         else {
-            channel side1Channel = callConvexHull(info, points, points.get(ind), p1, -findSide(points.get(ind), p1, p2));
-            channel side2Channel = callConvexHull(info, points, points.get(ind), p2, -findSide(points.get(ind), p2, p1));
+            parUntil -= 1;
+            if (parUntil > 0) {
+                channel side1Channel = callConvexHull(info, points, points.get(ind), p1, -findSide(points.get(ind), p1, p2), parUntil);
+                channel side2Channel = callConvexHull(info, points, points.get(ind), p2, -findSide(points.get(ind), p2, p1), parUntil);
 
-            hull = (HashSet<MyPoint>) side1Channel.readObject();
-            hull.addAll((HashSet<MyPoint>) side2Channel.readObject());
+                hull = (HashSet<MyPoint>) side1Channel.readObject();
+                hull.addAll((HashSet<MyPoint>) side2Channel.readObject());
+            }
+            else {
+                hull = find_hull(points, points.get(ind), p1, -findSide(points.get(ind), p1, p2));
+                hull.addAll(find_hull(points, points.get(ind), p2, -findSide(points.get(ind), p2, p1)));
+            }
         }
 
         info.parent.write((Serializable) hull);

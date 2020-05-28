@@ -32,8 +32,8 @@ public class Main {
         int[] minmax = ConvexHull.findLeftRightIndices(points);
         int min_ind = minmax[0];
         int max_ind = minmax[1];
-        channel side1Channel = ConvexHullParallel.callConvexHull(info, points, points.get(min_ind), points.get(max_ind), 1);
-        channel side2Channel = ConvexHullParallel.callConvexHull(info, points, points.get(min_ind), points.get(max_ind), -1);
+        channel side1Channel = ConvexHullParallel.callConvexHull(info, points, points.get(min_ind), points.get(max_ind), 1, 1);
+        channel side2Channel = ConvexHullParallel.callConvexHull(info, points, points.get(min_ind), points.get(max_ind), -1, 1);
 
         HashSet<MyPoint> hull;
         hull = (HashSet<MyPoint>) side1Channel.readObject();
