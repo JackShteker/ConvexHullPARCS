@@ -19,7 +19,8 @@ public class Main {
         curtask.addJarFile("ConvexHullParallel.jar");
 
         AMInfo info = new AMInfo(curtask, null);
-        Scanner sc = new Scanner(new File(curtask.findFile("points_large.txt")));
+        Scanner sc = new Scanner(new File(curtask.findFile("points_1m.txt")));
+//        Scanner sc = new Scanner(new File("out/points_large.txt"));
 
         List<MyPoint> points = new ArrayList<>();
         while (sc.hasNextLine()) {
@@ -28,6 +29,8 @@ public class Main {
             points.add(new MyPoint(Integer.parseInt(nums[0]), Integer.parseInt(nums[1])));
         }
         sc.close();
+
+        System.out.println(points.size());
 
         int[] minmax = ConvexHull.findLeftRightIndices(points);
         int min_ind = minmax[0];
@@ -38,6 +41,10 @@ public class Main {
         HashSet<MyPoint> hull;
         hull = (HashSet<MyPoint>) side1Channel.readObject();
         hull.addAll((HashSet<MyPoint>) side2Channel.readObject());
+//        System.out.println(points.get(min_ind).toString() + points.get(max_ind).toString());
+//        HashSet<MyPoint> hull = ConvexHull.find_hull(points, points.get(min_ind), points.get(max_ind), 1);
+//        hull.addAll(ConvexHull.find_hull(points, points.get(min_ind), points.get(max_ind), -1));
+
         System.out.println(hull);
 
 
