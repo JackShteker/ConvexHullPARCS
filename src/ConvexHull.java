@@ -40,6 +40,8 @@ public class ConvexHull {
         }
         System.out.println("Convex hull iteration.\n" +
                 "p1: " + p1.toString() + " p2: " + p2.toString());
+        System.out.println(-findSide(points.get(ind), p1, p2));
+        System.out.println(-findSide(points.get(ind), p2, p1));
         HashSet<MyPoint> hull = find_hull(points, points.get(ind), p1, -findSide(points.get(ind), p1, p2));
         hull.addAll(find_hull(points, points.get(ind), p2, -findSide(points.get(ind), p2, p1)));
         return hull;
