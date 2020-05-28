@@ -33,7 +33,7 @@ public class ConvexHullParallel extends ConvexHull implements AM {
         Integer side = (Integer) info.parent.readObject();
         Integer parUntil = (Integer) info.parent.readObject();
         System.out.println("Convex hull iteration.\n" +
-                "p1: " + p1.toString() + " p2: " + p2.toString());
+                "p1: " + p1.toString() + " p2: " + p2.toString() + parUntil.toString());
 
         List<Double> result;
 
@@ -55,10 +55,9 @@ public class ConvexHullParallel extends ConvexHull implements AM {
             hull.add((p2));
         }
         else {
-            parUntil -= 1;
             if (parUntil > 0) {
-                channel side1Channel = callConvexHull(info, points, points.get(ind), p1, -findSide(points.get(ind), p1, p2), parUntil);
-                channel side2Channel = callConvexHull(info, points, points.get(ind), p2, -findSide(points.get(ind), p2, p1), parUntil);
+                channel side1Channel = callConvexHull(info, points, points.get(ind), p1, -findSide(points.get(ind), p1, p2), parUntil - 1);
+                channel side2Channel = callConvexHull(info, points, points.get(ind), p2, -findSide(points.get(ind), p2, p1), parUntil - 1);
 
                 hull = (HashSet<MyPoint>) side1Channel.readObject();
                 hull.addAll((HashSet<MyPoint>) side2Channel.readObject());

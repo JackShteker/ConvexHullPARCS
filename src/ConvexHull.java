@@ -14,7 +14,8 @@ public class ConvexHull {
     }
 
     public static int line_dist(MyPoint p1, MyPoint p2, MyPoint p) {
-        int val = (p.y - p1.y) * (p2.x - p1.x) - (p2.y - p1.y) * (p.x - p1.x);
+//        int val = (p.y - p1.y) * (p2.x - p1.x) - (p2.y - p1.y) * (p.x - p1.x);
+        int val = (p2.y - p1.y) * p.x - (p2.x - p1.x) * p.y + p2.x * p1.y - p2.y * p1.x;
         return abs(val);
     }
 
@@ -37,6 +38,8 @@ public class ConvexHull {
             hull.add((p2));
             return hull;
         }
+        System.out.println("Convex hull iteration.\n" +
+                "p1: " + p1.toString() + " p2: " + p2.toString());
         HashSet<MyPoint> hull = find_hull(points, points.get(ind), p1, -findSide(points.get(ind), p1, p2));
         hull.addAll(find_hull(points, points.get(ind), p2, -findSide(points.get(ind), p2, p1)));
         return hull;
