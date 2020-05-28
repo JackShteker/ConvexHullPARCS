@@ -1,3 +1,4 @@
+
 import parcs.AMInfo;
 import parcs.channel;
 import parcs.point;
@@ -10,6 +11,7 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.List;
 
+@SuppressWarnings("unchecked")
 public class Main {
 
     public static void main(String[] args) throws FileNotFoundException {
@@ -19,11 +21,11 @@ public class Main {
         AMInfo info = new AMInfo(curtask, null);
         Scanner sc = new Scanner(new File(curtask.findFile("points.txt")));
 
-        List<Point> points = new ArrayList<>();
+        List<MyPoint> points = new ArrayList<>();
         while (sc.hasNextLine()) {
             String data = sc.nextLine();
             String[] nums = data.split(" ");
-            points.add(new Point(Integer.parseInt(nums[0]), Integer.parseInt(nums[1])));
+            points.add(new MyPoint(Integer.parseInt(nums[0]), Integer.parseInt(nums[1])));
         }
         sc.close();
 
@@ -33,11 +35,11 @@ public class Main {
         channel side1Channel = ConvexHullParallel.callConvexHull(info, points, points.get(min_ind), points.get(max_ind), 1);
         channel side2Channel = ConvexHullParallel.callConvexHull(info, points, points.get(min_ind), points.get(max_ind), -1);
 
-        HashSet<Point> hull;
-        hull = (HashSet<Point>) side1Channel.readObject();
-        hull.addAll((HashSet<Point>) side2Channel.readObject());
+        HashSet<MyPoint> hull;
+        hull = (HashSet<MyPoint>) side1Channel.readObject();
+        hull.addAll((HashSet<MyPoint>) side2Channel.readObject());
         System.out.println(hull);
-        
+
 
 
     }
