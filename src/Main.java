@@ -19,7 +19,7 @@ public class Main {
         curtask.addJarFile("ConvexHullParallel.jar");
 
         AMInfo info = new AMInfo(curtask, null);
-        Scanner sc = new Scanner(new File(curtask.findFile("points_1m.txt")));
+        Scanner sc = new Scanner(new File(curtask.findFile("points_large.txt")));
 //        Scanner sc = new Scanner(new File("out/points_large.txt"));
 
         List<MyPoint> points = new ArrayList<>();
@@ -40,7 +40,7 @@ public class Main {
         if (points.size() < 100000)
             par_until = 0;
         else
-            par_until = (int)Math.round(Math.log((double)(points.size()) / 100000.) / Math.log(2));
+            par_until = (int)Math.round(Math.log((double)(points.size()) / 20000.) / Math.log(2));
         channel side1Channel = ConvexHullParallel.callConvexHull(info, points, points.get(min_ind), points.get(max_ind), 1, par_until);
         channel side2Channel = ConvexHullParallel.callConvexHull(info, points, points.get(min_ind), points.get(max_ind), -1, par_until);
 
@@ -54,8 +54,6 @@ public class Main {
         System.out.println(hull);
 
         curtask.end();
-
-
     }
 
 }
