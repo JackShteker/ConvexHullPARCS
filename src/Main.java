@@ -53,6 +53,7 @@ public class Main {
 
         System.out.println(hull);
 
+        curtask.end();
 
 
     }

@@ -11,8 +11,6 @@ import java.util.List;
 @SuppressWarnings("unchecked")
 public class ConvexHullParallel extends ConvexHull implements AM {
 
-    public static int PARALLEL_SIZE_LIMIT = 1 << 16;
-
     public static channel callConvexHull(AMInfo info, List<MyPoint> points, MyPoint p1, MyPoint p2, Integer side, Integer parUntil) {
         point p = info.createPoint();
         channel c = p.createChannel();
